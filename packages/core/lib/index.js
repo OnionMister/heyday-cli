@@ -7,8 +7,12 @@ const colors = require('colors/safe'); // 输出带颜色的字体
 module.exports = core;
 
 function core() {
-    welcome();
-    checkNodeVersion();
+    try {
+        welcome();
+        checkNodeVersion();
+    } catch (e) {
+        log.error(e.message);
+    }
 }
 
 // 检查node版本，保证脚手架可以正常运行
