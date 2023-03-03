@@ -20,6 +20,8 @@
     "test": "node ./__tests__/core.test.js"
   },
   "dependencies": {
-    "@heyday-cli/utils": "file: ../utils"
+    "@heyday-cli/utils": "file: ../utils",
+    "colors": "^1.4.0",
+    "semver": "^7.3.8"
   }
 }
