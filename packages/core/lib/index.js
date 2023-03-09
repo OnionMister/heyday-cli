@@ -1,5 +1,5 @@
 const path = require('path'); // 路径操作对象
-const { log, locale } = require('@heyday-cli/utils');
+const { log, locale, npm } = require('@heyday-cli/utils');
 const pkg = require('../package.json');
 const semver = require('semver'); // 比对版本号
 const colors = require('colors/safe'); // 输出带颜色的字体
@@ -21,12 +21,29 @@ function core() {
         checkUserHome();
         checkInputArgs();
         checkEnv();
+        checkUpdate();
     } catch (e) {
         log.error(e.message);
     }
 }
 
-// 检查环境变量
+// 检查脚手架是否有更新
+function checkUpdate() {
+    // 获取当前包信息
+    const curPkgName = pkg.name;
+    const curPkgVersion = pkg.version;
+    // 获取线上当前包信息
+    npm.getLatestVersion(curPkgName, curPkgVersion).then(latestVersion => {
+        if (latestVersion && semver.gt(latestVersion, curPkgVersion)) {
+            log.warn(colors.yellow(`建议更新${curPkgName}
+                当前版本为：${curPkgVersion}
+                最新版本为： ${latestVersion}
+                更新命令为：npm i -g ${curPkgName}`));
+        }
+    });
+}
+
+// 检查环境变量-预置cli主目录，用于后续使用
 function checkEnv() {
     log.verbose('检查环境变量');
     const dotEvnPath = path.resolve(userHome, '.env');
