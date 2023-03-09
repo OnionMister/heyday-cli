@@ -22,6 +22,7 @@
   "dependencies": {
     "@heyday-cli/utils": "file: ../utils",
     "colors": "^1.4.0",
+    "dotenv": "^16.0.3",
     "minimist": "^1.2.8",
     "root-check": "^1.0.0",
     "semver": "^7.3.8",

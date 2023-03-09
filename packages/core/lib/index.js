@@ -1,12 +1,14 @@
+const path = require('path'); // 路径操作对象
 const { log, locale } = require('@heyday-cli/utils');
 const pkg = require('../package.json');
-const { LOWEST_NODE_VERSION } = require('./const');
 const semver = require('semver'); // 比对版本号
 const colors = require('colors/safe'); // 输出带颜色的字体
 const rootCheck = require('root-check'); // 降级root账户
 const userHome = require('user-home'); // 获取用户主目录
 const fs = require('fs'); // node文件操作对象
 const minimist = require('minimist'); // 解析命令行参数
+const dotEnv = require('dotenv'); // 读取环境变量
+const { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } = require('./const');
 
 module.exports = core;
 
@@ -18,9 +20,20 @@ function core() {
         rootCheck(colors.red('请避免使用 root 账户启动本应用'));
         checkUserHome();
         checkInputArgs();
+        checkEnv();
     } catch (e) {
         log.error(e.message);
     }
+}
+
+// 检查环境变量
+function checkEnv() {
+    log.verbose('检查环境变量');
+    const dotEvnPath = path.resolve(userHome, '.env');
+    if (fs.existsSync(dotEvnPath)) {
+        dotEnv.config({ path: dotEvnPath });
+    }
+    process.env.CLI_HOME_PATH = path.join(userHome, process.env.CLI_HOME ? process.env.CLI_HOME : DEFAULT_CLI_HOME);
 }
 
 // 打印输入的参数
