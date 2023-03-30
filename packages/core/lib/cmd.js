@@ -5,8 +5,13 @@ const program = new commander.Command();
 const { _optionValues: optionValues } = program;
 
 function registerCommand(pkg) {
-    program.usage('<command> [options]').version(pkg.version);
-    program.option('-d, --debug', '是否启动调试模式', false);
+    program
+        .name(Object.keys(pkg.bin)[0])
+        .usage('<command> [options]')
+        .version(pkg.version);
+
+    program
+        .option('-d, --debug', '是否启动调试模式', false);
 
     // 调试模式监听
     program.on('option:debug', function() {
@@ -26,6 +31,12 @@ function registerCommand(pkg) {
             log.info('可用命令：', availableCommands);
         }
     });
+
+    // 未输入命令自动打印帮助文档
+    if (process.argv.length < 3) {
+        program.outputHelp();
+        console.log()
+    }
 
     // 解析命令参数
     program.parse(process.argv);

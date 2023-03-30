@@ -90,5 +90,5 @@ function checkNodeVersion() {
 }
 
 function welcome() {
-    log.success(locale(), 'v' + pkg.version);
+    log.success(locale() + ' v' + pkg.version + '\n');
 }
