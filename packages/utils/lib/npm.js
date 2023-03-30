@@ -2,9 +2,9 @@ const axios = require('axios');
 const semver = require('semver'); // 版本号比较
 const urlJoin = require('url-join'); // url拼接
 
-// 获取默认源
+// 获取默认源API
 function getDefaultRegistry(isOrigin = false) {
-    // 淘宝源可能会重定向到https://registry.npmmirror.com/
+    // 淘宝API可能会重定向到https://registry.npmmirror.com/
     return isOrigin? 'https://registry.npmjs.org/' : 'https://registry.npm.taobao.org';
 }
 

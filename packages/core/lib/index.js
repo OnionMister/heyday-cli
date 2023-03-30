@@ -8,6 +8,7 @@ const userHome = require('user-home'); // 获取用户主目录
 const fs = require('fs'); // node文件操作对象
 const minimist = require('minimist'); // 解析命令行参数
 const dotEnv = require('dotenv'); // 读取环境变量
+const registerCommand = require('./cmd');
 const { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } = require('./const');
 
 module.exports = core;
@@ -19,9 +20,10 @@ function core() {
         // 如何是以root启动安装，则对root降级，防止以后用其他用户登录无法访问或操作的情况出现
         rootCheck(colors.red('请避免使用 root 账户启动本应用'));
         checkUserHome();
-        checkInputArgs();
+        // checkInputArgs();
         checkEnv();
         checkUpdate();
+        registerCommand(pkg);
     } catch (e) {
         log.error(e.message);
     }
@@ -88,6 +90,5 @@ function checkNodeVersion() {
 }
 
 function welcome() {
-    log.notice('cli', pkg.version);
-    log.success(locale());
+    log.success(locale(), 'v' + pkg.version);
 }
