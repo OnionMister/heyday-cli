@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@heyday-cli/utils": "file: ../utils",
+    "@heyday-cli/init": "file: ../init",
     "colors": "^1.4.0",
     "commander": "^10.0.0",
     "dotenv": "^16.0.3",

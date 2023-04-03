@@ -1,0 +1,29 @@
+{
+  "name": "@heyday-cli/init",
+  "version": "1.0.0",
+  "description": "heyday-cli init",
+  "author": "yangshaotong <yangshaotong@baidu.com>",
+  "homepage": "https://github.com/OnionMister/heyday-cli#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnionMister/heyday-cli.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/@heyday-cli/init.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/OnionMister/heyday-cli/issues"
+  }
+}
