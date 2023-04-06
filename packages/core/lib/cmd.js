@@ -9,7 +9,8 @@ function registerCommand(pkg) {
         .name(Object.keys(pkg.bin)[0])
         .usage('<command> [options]')
         .version(pkg.version)
-        .option('-d, --debug', '是否启动调试模式', false);
+        .option('-d, --debug', '是否启动调试模式', false)
+        .option('-tp, --target-path <targetPath>', '是否指定执行本地已存在的脚手架（绝对路径）', '');
 
     // 初始化新项目
     program
@@ -31,10 +32,10 @@ function registerCommand(pkg) {
 
     // 未知命令兼容
     program.on('command:*', function(cmd){
-        const availableCommands = program.commands;
+        const availableCommands = program.commands.map(item => item.name());;
         log.error('未知命令：', cmd.join(','));
         if (availableCommands.length) {
-            log.info('可用命令：', availableCommands);
+            log.info('可用命令：', availableCommands.join(','));
         }
     });
     // 解析命令参数

@@ -25,7 +25,6 @@
     "colors": "^1.4.0",
     "commander": "^10.0.0",
     "dotenv": "^16.0.3",
-    "minimist": "^1.2.8",
     "root-check": "^1.0.0",
     "semver": "^7.3.8",
     "user-home": "^3.0.0"
