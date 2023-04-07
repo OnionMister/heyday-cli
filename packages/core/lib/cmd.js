@@ -1,5 +1,6 @@
 const { log } = require('@heyday-cli/utils');
 const init = require('@heyday-cli/init');
+const exec = require('@heyday-cli/exec');
 const commander = require('commander'); // 脚手架
 const program = new commander.Command();
 
@@ -16,7 +17,7 @@ function registerCommand(pkg) {
     program
         .command('init [projectName]')
         .option('-f, --force', '强制覆盖当前路径文件（谨慎使用）', false)
-        .action(init);
+        .action(exec);
         
     const optionValues = program.opts();
         
