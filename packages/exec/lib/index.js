@@ -5,32 +5,32 @@ const { Package } = require('@heyday-cli/utils');
 module.exports = exec;
 
 const SETTINGS = {
-  init: '@heyday-cli/init',
+    init: '@imooc12121-cli/init',
 }
 const DEPENDENCIES_PATH = 'dependencies';
 
 async function exec(projectName, options, cmd) {
-  let initPackage;
-  const homePath = process.env.CLI_HOME_PATH;
-  let { targetPath } = cmd.optsWithGlobals() || {};
-  let storeDir;
-  const cmdName = cmd.name();
-  const packageName = SETTINGS[cmdName];
-  const packageVersion = 'latest';
-  // 用户未指定包，则使用脚手架默认包
-  if (!targetPath) {
-    targetPath = path.resolve(homePath, DEPENDENCIES_PATH);
-    storeDir = path.resolve(targetPath, 'node_modules');
-    initPackage = new Package({ targetPath, storeDir, packageName, packageVersion });
-    if (initPackage.exists()) {
-      // 更新
-      await initPackage.update();
+    let initPackage;
+    const homePath = process.env.CLI_HOME_PATH;
+    let { targetPath } = cmd.optsWithGlobals() || {};
+    let storeDir;
+    const cmdName = cmd.name();
+    const packageName = SETTINGS[cmdName];
+    const packageVersion = 'latest';
+    // 用户未指定包，则使用脚手架默认包
+    if (!targetPath) {
+      targetPath = path.resolve(homePath, DEPENDENCIES_PATH);
+      storeDir = path.resolve(targetPath, 'node_modules');
+      initPackage = new Package({ targetPath, storeDir, packageName, packageVersion });
+      if (await initPackage.exists()) {
+        // 更新
+        await initPackage.update();
+      } else {
+        // 安装
+        await initPackage.install();
+      }
     } else {
-      // 安装
-      await initPackage.install();
+      initPackage = new Package({ targetPath, storeDir, packageName, packageVersion });
     }
-  } else {
-    initPackage = new Package({ targetPath, storeDir, packageName, packageVersion });
-  }
-  initPackage.getRootFilePath();
+    initPackage.getRootFilePath();
 }

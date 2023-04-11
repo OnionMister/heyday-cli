@@ -10,18 +10,25 @@ function getDefaultRegistry(isOrigin = false) {
 
 // 获取包信息
 function getNpmInfo(npmName, registry) {
-    if (!npmName) {
-        return null;
-    }
-    const newRegistry = registry || getDefaultRegistry();
-    const npmAPIUrl = urlJoin(newRegistry, npmName);
-    return axios.get(npmAPIUrl).then(res => {
-        if (res.status === 200) {
-            return res.data;
+    try {
+        
+        if (!npmName) {
+            return null;
         }
-    }).catch(err => {
-        return Promise.reject(err);
-    });
+        const newRegistry = registry || getDefaultRegistry();
+        const npmAPIUrl = urlJoin(newRegistry, npmName);
+        return axios.get(npmAPIUrl).then(res => {
+            if (res.status === 200) {
+                return res.data;
+            }
+            return null;
+        }).catch(err => {
+            console.log('获取包信息失败', '获取包信息失败')
+            return Promise.reject(err);
+        });
+    } catch (error) {
+        console.log('error: ', error.message);
+    }
 }
 
 // 获取包的所有版本
@@ -41,17 +48,33 @@ function getSemverVersions(curVer, versions) {
                 .sort((a, b) => semver.gt(a, b) ? -1 : 1);
 }
 
-// 获取最新版本
-async function getLatestVersion(npmName, npmVersion, registry) {
+// 获取符合semver规则的最新版本
+async function getSemverLatestVersion(npmName, npmVersion, registry) {
     const versions = await getNpmVersions(npmName, registry);
     const highVersions = getSemverVersions(npmVersion, versions);
     if (highVersions && highVersions.length > 0) {
         return highVersions[0];
     }
 }
+// 获取最新版本
+async function getLatestVersion(npmName, registry) {
+    try {
+        
+        const versions = await getNpmVersions(npmName, registry);
+        // return versions && versions.sort((a, b) => semver.gt(a, b) ? -1 : 1)[0];
+        if (versions) {
+            console.log('versions: ', versions);
+            // return versions.sort((a, b) => semver.gt(a, b) ? -1 : 1)[0];
+        }
+        return null;
+    } catch (error) {
+        console.log('error.message', error.message)
+    }
+}
 module.exports = {
     getNpmInfo,
     getNpmVersions,
+    getSemverLatestVersion,
     getLatestVersion,
     getDefaultRegistry,
 }

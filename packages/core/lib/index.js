@@ -38,7 +38,7 @@ async function checkUpdate() {
     const curPkgName = pkg.name;
     const curPkgVersion = pkg.version;
     // 获取线上当前包信息
-    const latestVersion = await npm.getLatestVersion(curPkgName, curPkgVersion);
+    const latestVersion = await npm.getSemverLatestVersion(curPkgName, curPkgVersion);
     if (latestVersion && semver.gt(latestVersion, curPkgVersion)) {
         log.warn(colors.yellow(`建议更新${curPkgName}
             当前版本为：${curPkgVersion}
