@@ -1,6 +1,7 @@
 const axios = require('axios');
 const semver = require('semver'); // 版本号比较
 const urlJoin = require('url-join'); // url拼接
+const log = require('./log');
 
 // 获取默认源API
 function getDefaultRegistry(isOrigin = false) {
@@ -27,11 +28,16 @@ function getNpmInfo(npmName, registry) {
 
 // 获取包的所有版本
 async function getNpmVersions(npmName, registry) {
-    const data = await getNpmInfo(npmName, registry);
-    if (data) {
-        return Object.keys(data.versions);
-    } else {
-        return [];
+    try {
+        const data = await getNpmInfo(npmName, registry);
+        if (data) {
+            return Object.keys(data.versions);
+        } else {
+            return [];
+        }
+    } catch (err) {
+        console.log();
+        log.error(`${npmName || '「包」'}信息获取失败：${err.message}\n`);
     }
 }
 
