@@ -57,7 +57,7 @@ function checkEnv() {
     process.env.CLI_HOME_PATH = path.join(userHome, process.env.CLI_HOME ? process.env.CLI_HOME : DEFAULT_CLI_HOME);
 }
 
-// 缓存等操作依赖用户主目录，预检查用户主目录
+// 预检查用户主目录（下载、安装依赖等操作依赖用户主目录）
 function checkUserHome() {
     if (!userHome || !fs.existsSync(userHome)) {
         throw new Error(colors.red('当前登录用户主目录不存在！'));

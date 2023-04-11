@@ -52,5 +52,6 @@ async function getLatestVersion(npmName, npmVersion, registry) {
 module.exports = {
     getNpmInfo,
     getNpmVersions,
-    getLatestVersion
+    getLatestVersion,
+    getDefaultRegistry,
 }
