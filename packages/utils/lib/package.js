@@ -17,28 +17,30 @@ class Package {
 
     // 
     async prepare() {
-      this.getPackageLatestVersion();
+        await this.getPackageLatestVersion();
     }
 
     // 是否存在当前Package
     async exists() {
         if (this.storeDir) {
             await this.prepare();
+            return pathExists(this.cacheFilePath);
         } else {
             // 用户指定包
             return pathExists(this.targetPath);
         }
     }
     // 安装Package
-    install() {
+    async install() {
+      await this.prepare();
       npmInstall({
-        root: this.targetPath, // 主目录
-        storeDir: this.storeDir, // 依赖安装目录
-        register: getDefaultRegistry(),
-        pkgs: [{
-          name: this.packageName,
-          version: this.packageVersion,
-        }],
+          root: this.targetPath, // 主目录
+          storeDir: this.storeDir, // 依赖安装目录
+          register: getDefaultRegistry(),
+          pkgs: [{
+              name: this.packageName,
+              version: this.packageVersion,
+          }],
       });      
     }
     // 升级Package
@@ -55,9 +57,7 @@ class Package {
     // 获取Package的最新版本号
     async getPackageLatestVersion() {
         if (this.packageVersion === 'latest') {
-            console.log('this.packageName, this.packageVersion: ', this.packageName, this.packageVersion);
             this.packageVersion = await getLatestVersion(this.packageName);
-            console.log('this.packageVersion: ', this.packageVersion);
         }
     }
 }
