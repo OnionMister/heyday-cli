@@ -4,8 +4,9 @@ const { Package } = require('@heyday-cli/utils');
 
 module.exports = exec;
 
+// 脚手架默认包
 const SETTINGS = {
-    init: '@imooc-cli/init',
+    init: '@heyday-cli/init',
 }
 const DEPENDENCIES_PATH = 'dependencies';
 
@@ -30,7 +31,9 @@ async function exec(projectName, options, cmd) {
             await initPackage.install();
         }
     } else {
-        initPackage = new Package({ targetPath, storeDir, packageName, packageVersion });
+        initPackage = new Package({ targetPath, packageName, packageVersion });
     }
-    initPackage.getRootFilePath();
+    const rootFilePath = initPackage.getRootFilePath();
+    console.log('rootFilePath: ', rootFilePath);
+    // TODO: 入口文件
 }

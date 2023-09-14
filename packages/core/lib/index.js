@@ -18,6 +18,9 @@ async function core() {
         registerCommand(pkg);
     } catch (e) {
         log.error(e.message);
+        if (process.env.LOG_LEVEL === 'verbose') {
+            console.error(e);
+        }
     }
 }
 
