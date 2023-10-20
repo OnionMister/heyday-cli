@@ -40,7 +40,7 @@ class Command {
     initArgs() {
         const argvLen = this._argv.length;
         this._cmd = this._argv[argvLen - 1];
-        this._options = this._cmd.optsWithGlobals();
+        this._options = this._cmd.userOptions;
         this._argv = this._argv.slice(0, argvLen - 1)
     }
 

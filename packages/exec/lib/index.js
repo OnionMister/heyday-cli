@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const childProcess = require('child_process');
 const { Package, log } = require('@heyday-cli/utils');
 
 module.exports = exec;
@@ -39,9 +40,48 @@ async function exec(projectName, options, cmd) {
         }
         const rootFilePath = initPackage.getRootFilePath();
         if (rootFilePath) {
-            require(rootFilePath).call(null, Array.from(arguments));
+            // 当前进程调用
+            // require(rootFilePath).call(null, Array.from(arguments));
+
+            // 使用node子进程
+            const args = Array.from(arguments);
+            const cmd = args[args.length - 1];
+            // cmd过滤
+            const tempObj = Object.create(null);
+            Object.keys(cmd).forEach(key => {
+                if (cmd.hasOwnProperty(key) && !key.startsWith('_') && key !== 'parent') {
+                    tempObj[key] = cmd[key];
+                }
+            });
+            tempObj.userOptions = cmd.optsWithGlobals() || {};
+            args[args.length - 1] = tempObj;
+            const code = `require('${rootFilePath}').call(null, ${JSON.stringify(args)})`;
+            const child = cusSpawn('node', ['-e', code], {
+                cwd: process.cwd(),
+                stdio: 'inherit',
+            });
+            child.on('error', e => {
+                log.error(e.message);
+                process.exit(1);
+            });
+            child.on('exit', e => {
+                log.verbose(`命令执行完成，code：${e}`);
+                process.exit(e);
+            });
         }
     } catch(err) {
         log.error(err.message);
     }
 }
+
+// 兼容win的命令执行
+function cusSpawn(command, args, options) {
+    const win32 = process.platform === 'win32';
+    console.log('process.platform: ', process.platform);
+    const cmd = win32 ? 'cmd' : command;
+    const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
+
+    return childProcess.spawn(cmd, cmdArgs, options || {});
+}
+
+module.exports = exec;
