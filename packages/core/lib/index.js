@@ -8,7 +8,7 @@ const userHome = require('user-home'); // 获取用户主目录
 const fs = require('fs'); // node文件操作对象
 const dotEnv = require('dotenv'); // 读取环境变量
 const registerCommand = require('./cmd');
-const { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } = require('./const');
+const { DEFAULT_CLI_HOME } = require('./const');
 
 module.exports = core;
 
@@ -27,7 +27,6 @@ async function core() {
 // 脚手架启动阶段
 async function prepareFun() {
     welcome();
-    checkNodeVersion();
     // 如何是以root启动安装，则对root降级，防止以后用其他用户登录无法访问或操作的情况出现
     rootCheck(colors.red('请避免使用 root 账户启动本应用'));
     checkUserHome();
@@ -64,15 +63,6 @@ function checkEnv() {
 function checkUserHome() {
     if (!userHome || !fs.existsSync(userHome)) {
         throw new Error(colors.red('当前登录用户主目录不存在！'));
-    }
-}
-
-// 检查node版本，保证脚手架可以正常运行
-function checkNodeVersion() {
-    // 获取当前版本号
-    const curNodeVersion = process.version;
-    if (!semver.gte(process.version, LOWEST_NODE_VERSION)) {
-        throw new Error(colors.red(`「heyday-cli」需要安装「v${LOWEST_NODE_VERSION}」以上版本的Node.js`));
     }
 }
 
