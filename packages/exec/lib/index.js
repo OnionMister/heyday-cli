@@ -34,6 +34,5 @@ async function exec(projectName, options, cmd) {
         initPackage = new Package({ targetPath, packageName, packageVersion });
     }
     const rootFilePath = initPackage.getRootFilePath();
-    console.log('rootFilePath: ', rootFilePath);
-    // TODO: 入口文件
+    require(rootFilePath).call(null, Array.from(arguments));
 }

@@ -25,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/OnionMister/heyday-cli/issues"
+  },
+  "dependencies": {
+    "@heyday-cli/utils": "file: ../utils"
   }
 }
