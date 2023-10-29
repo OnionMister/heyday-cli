@@ -27,6 +27,9 @@
     "url": "https://github.com/OnionMister/heyday-cli/issues"
   },
   "dependencies": {
-    "@heyday-cli/utils": "file: ../utils"
+    "@heyday-cli/utils": "file: ../utils",
+    "fs-extra": "^11.1.1",
+    "inquirer": "8.0.0",
+    "semver": "^7.5.4"
   }
 }

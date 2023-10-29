@@ -77,7 +77,6 @@ async function exec(projectName, options, cmd) {
 // 兼容win的命令执行
 function cusSpawn(command, args, options) {
     const win32 = process.platform === 'win32';
-    console.log('process.platform: ', process.platform);
     const cmd = win32 ? 'cmd' : command;
     const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
 
